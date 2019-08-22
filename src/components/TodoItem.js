@@ -1,38 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export class TodoItem extends Component {
-    getStyle = () => {
-        return {
-            background: '#F4F4F4',
-            padding: '10px',
-            borderBottom: '1px #ccc dotted',
-            textDecoration: this.props.todo.completed ? 'line-through' : 'none',
-        }
-    };
+const getStyle = completed => {
+  return {
+    background: '#F4F4F4',
+    padding: '10px',
+    borderBottom: '1px #ccc dotted',
+    textDecoration: completed ? 'line-through' : 'none',
+  };
+};
 
-    render() {
-        const { id, title, completed } = this.props.todo;
-        return (
-            <div style={ this.getStyle() }>
-                <p>
-                    <input type="checkbox" onChange={ this.props.markComplete.bind(this, id ) } checked={ completed ? 'checked': '' }/>{' '}
-                    {title}
-                    <button onClick={this.props.delTodo.bind(this, id)} style={{ float: 'right' }}>
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </button>
-                </p>
-            </div>
-        )
-    }
-}
+const TodoItem = ({ markComplete, delTodo, todo }) => (
+  <div style={getStyle(todo.completed)}>
+    <p>
+      <input
+        type="checkbox"
+        onChange={() => markComplete(todo.id)}
+        checked={todo.completed ? 'checked' : ''}
+      />{' '}
+      {todo.title}
+      <button onClick={() => delTodo(todo.id)} style={{ float: 'right' }}>
+        <i className="fa fa-trash" aria-hidden="true" />
+      </button>
+    </p>
+  </div>
+);
 
-// PropTypes
-TodoItem.PropTypes = {
-    todos: PropTypes.object.isRequired,
-    markComplete: PropTypes.func.isRequired,
-    delTodo: PropTypes.func.isRequired
-}
-
+TodoItem.propTypes = {
+  todo: PropTypes.object.isRequired,
+  markComplete: PropTypes.func.isRequired,
+  delTodo: PropTypes.func.isRequired,
+};
 
 export default TodoItem;
